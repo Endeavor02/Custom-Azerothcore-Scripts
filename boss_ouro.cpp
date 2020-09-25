@@ -10,6 +10,14 @@ SD%Complete: 85
 SDComment: No model for submerging. Currently just invisible.
 SDCategory: Temple of Ahn'Qiraj
 EndScriptData */
+/*
+^^ Aha! not anymore! Scroll down to see my solution.
+Modified 2020 Jeffrey Blanda
+Note: for this script to work properly, you must create a creature with the entry 9015717 that has the SmartAI to case his burrow ability periodically.
+The boss will function without it, however the ground rumble damage will not happen all over the room.
+*/
+
+
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
@@ -66,7 +74,6 @@ public:
                     Trigger = i;
                 }
             }
-//            std::cout << "Got trigger with GUID of " << Trigger->GetGUID(); was used for debugging
             return Trigger;
         }
 
@@ -159,6 +166,7 @@ public:
 
             if (Submerged && changeArea_Timer <= diff)
             {
+            /* I added tihs to spice things up, the actual fight isn't like this as the boss doesn't move just the dirt mounds.
                 float x, y, z;
                 x = -9170;
                 y = 2125;
@@ -166,13 +174,12 @@ public:
                 //Initial values in case it cannot select a target!
                 Unit* target = nullptr;
                 target = SelectTarget(SELECT_TARGET_RANDOM, 0);
-//                Unit* temp = me->GetNextRandomRaidMemberOrPet(75);
                 x = target->GetPositionX();
                 y = target->GetPositionY();
                 z = target->GetPositionZ();
-                std::cout << "Moving to " << x <<" x, " << y << " y, " << z << " z. \n";
                 me->MonsterMoveWithSpeed(x,y,z, 10.0);
                 myTrigger->MonsterMoveWithSpeed(x,y,z, 10.0);
+                */
                 DoCast(me, SPELL_DIRTMOUND_PASSIVE);
                 changeArea_Timer = urand(4000, 6000);
                 for (int i = 0; i < 10; ++i)
@@ -180,7 +187,6 @@ public:
                     float x = getRandX();
                     float y = getRandY();
                     float z = getRandZ();
-                    cout << "Sending Quaker to " << x << " x, " <<y<< " y, " << z << " z,\n";
                     Quakers[i]->MonsterMoveWithSpeed(x, y, z, 200);
                 }
             }
@@ -211,7 +217,7 @@ public:
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 //                me->setFaction(35); I think this is causing him to bug out and get stuck in this phase
                 DoCast(me, SPELL_DIRTMOUND_PASSIVE);
-                me->SetObjectScale(-1);
+                me->SetObjectScale(-1); //this is my hack, instead of making him invisible we can invert his model that way we can still see his animation.
 //                me->MonsterMoveWithSpeed(-9173.0, 2107.11, -85.0, 100.0);
 
                 Submerged = true;
