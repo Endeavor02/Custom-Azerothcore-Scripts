@@ -1,3 +1,9 @@
+/*
+Jeffrey Blanda, 2020
+
+This script should be used for a vanilla-like Kazzak encounter in a WotLK environment. Using this script may require some spell DBC changes.
+This script is based off of the TBC Kazzak encounter script as they are very similar.
+*/
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 #include "SpellAuraEffects.h"
@@ -155,7 +161,7 @@ class boss_lord_kazzak : public CreatureScript
             return new boss_lord_kazzakAI (creature);
         }
 };
-/*
+/* //Redundant, since the TBC script still has this function we can comment this out and use that one.
 class spell_mark_of_kazzak : public SpellScriptLoader
 {
 public:
