@@ -3,7 +3,7 @@
  * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
-//Butchered to make Razorgore work properly by Endeavor02
+//Butchered to make Razorgore work properly by Jeffrey Blanda, 2020
 //But he works!
 //It's still a mess...
 
