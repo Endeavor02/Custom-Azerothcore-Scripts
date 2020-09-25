@@ -3,6 +3,14 @@
  * Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  */
+// Modified 2020 Jeffrey Blanda
+/*
+## The way this script was released, it relied on the spell "activating" 30 gameobjects.
+## This is flawed as the spell can "activate" a single egg more than once, a chair, the orb, etc.
+## I wrote modified it to get each egg and check the state of it, if they are all activated when the check is executed,
+## the encounter changes phase correctly. 
+## Note that the adds are still not function completely correctly as they should flee during this phase change and despawn.
+*/
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
@@ -74,7 +82,7 @@ public:
                 EggArray[i]->ResetDoorOrButton();
             }
         }
-        bool changePhaseCheck() //Not yet working.
+        bool changePhaseCheck() 
         {
             bool P2 = true;
             for (int i = 0; i < 30; ++i)
@@ -94,10 +102,6 @@ public:
             secondPhase = false;
             instance->SetData(DATA_EGG_EVENT, NOT_STARTED);
             if (wasInCombat) {
-                for (int i = 0; i < 30; ++i)
-                {
-//                    std::cout<< EggArray[i]->GetGoState() << "\n"; //was used for debugging
-                }
                 resetEggs();
                 instance->SetData(DATA_RESET_ADDS, 1);
                 instance->SetData(DATA_RESET_ADDS, 0);
@@ -139,7 +143,6 @@ public:
         void EnterCombat(Unit* who) override
         {
             events.ScheduleEvent(EVENT_CHECK_PHASE, 20000);
-//            std::cout << "Scheduled Event" << endl; //was used for debugging
             wasInCombat = true;
             getEggData();
         }
@@ -159,11 +162,9 @@ public:
                 switch (eventId)
                 {
                 case EVENT_CHECK_PHASE:
-                    std::cout << "EVENT CHECK PHASE REACHED" <<endl; //was used for debugging
                     if (changePhaseCheck())
                     {
                         instance->SetData(DATA_EGG_EVENT, GO_P2);
-//                        std::cout << "SENT DATA FOR P2" << endl; //was used for debugging
                     }
                     else {
                         events.ScheduleEvent(EVENT_CHECK_PHASE, 10000);
