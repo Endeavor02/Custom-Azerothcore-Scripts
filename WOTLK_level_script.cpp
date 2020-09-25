@@ -1,24 +1,10 @@
-// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / //
-//                                                                                           //
-//    ____                _           _   _             __  __      ____        _ _     _    //
-//   / ___|_ __ ___  __ _| |_ ___  __| | | |__  _   _  |  \/  |_ __/ ___|  ___ | (_) __| |   //
-//  | |   | '__/ _ \/ _` | __/ _ \/ _` | | '_ \| | | | | |\/| | '__\___ \ / _ \| | |/ _` |   //
-//  | |___| | |  __/ (_| | ||  __/ (_| | | |_) | |_| | | |  | | |   ___) | (_) | | | (_| |   //
-//   \____|_|  \___|\__,_|\__\___|\__,_| |_.__/ \__, | |_|  |_|_|  |____/ \___/|_|_|\__,_|   //
-//                                              |___/                                        //
-//                                                                                           //
-// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / //
-
-//Created by MrSolid, 2017. Exclusively for the ACWeb Community.
-
 #include "ScriptMgr.h"
 #include "GridNotifiersImpl.h"
 
 enum
 {
-	min_level = 70,
+	min_level = 70,//Defines the min level the player must be
 	max_level = 80 //Defines the max level the player can reach
-//	new_level = 56 //Defines the level which the player will reach after using this token.
 };
 
 class wotlk_level_token : public ItemScript
@@ -47,14 +33,14 @@ public:
 		else
 		{
 			player->DestroyItemCount(item->GetEntry(), 1, true); //Item is destroyed on useage.
-			player->GiveLevel((player->getLevel()+1)); //The player recieves levels needed to reach new_level. E.g. 255-254=1; 1+254=255.
+			player->GiveLevel((player->getLevel()+1)); //The player recieves one level.
 //			player->GetSession()->SendNotification("Your leveling token has now been destroyed, and you are now level %i", new_level);
 		}
 		return true;
 	}
 };
 
-void AddSC_wotlk_level_token() // Add to scriptloader normally
+void AddSC_wotlk_level_token()
 {
 	new wotlk_level_token();
 }
